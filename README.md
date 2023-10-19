@@ -1,24 +1,49 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails app created using:
 
-Things you may want to cover:
+```bash
+rails new tasks --skip-action-mailbox --skip-hotwire --skip-action-text --database=postgresql --css bootstrap
+```
 
-* Ruby version
+## Database structure
 
-* System dependencies
+This is a basic initial structure of the models
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```mermaid
+classDiagram
+    direction LR
+    Task <-- User
+    Task <-- Timelog
+    Dependency *-- Source
+    Task <-- Dependency
+    class Task {
+        +bool completed
+        +string title
+        +text body
+        +int estimated_time
+        +int actual_time
+        +date due_date
+        +mark_done()
+    }
+    class User {
+        +String name
+    }
+    class Timelog {
+      +timestamp start
+      +timestamp end
+      +start_timer()
+      +stop_timer()
+    }
+    namespace Nice_To_Have {
+        class Dependency {
+            +string title
+            +string url
+        }
+        class Source {
+            +string title
+            +string base_url
+        }
+        %% Source could be Todoist, Calendar, Email, Obsidian file, etc.
+    }
+```
