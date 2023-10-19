@@ -6,6 +6,11 @@ Rails app created using:
 rails new tasks --skip-action-mailbox --skip-hotwire --skip-action-text --database=postgresql --css bootstrap
 ```
 
+## Requirements
+
+- [ ] Check off tasks
+- [ ] Start/stop timers for a task
+
 ## Database structure
 
 This is a basic initial structure of the models
