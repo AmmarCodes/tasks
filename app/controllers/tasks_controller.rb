@@ -2,7 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: %i[show edit update destroy]
+  before_action :set_task, only: %i[show edit update destroy complete uncomplete]
 
   # GET /tasks or /tasks.json
   def index
@@ -56,6 +56,14 @@ class TasksController < ApplicationController
       format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete
+    @task.update({ completed: true })
+  end
+
+  def uncomplete
+    @task.update({ completed: false })
   end
 
   private

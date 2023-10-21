@@ -1,5 +1,16 @@
 <script setup>
-defineProps({ id: Number, title: String, content: String, due_date: String });
+const props = defineProps({
+  id: Number,
+  title: String,
+  content: String,
+  due_date: String,
+  completed: Boolean,
+});
+const emit = defineEmits(["complete", "uncomplete"]);
+
+const handleTaskChange = (event) => {
+  emit(event.target.checked ? "complete" : "uncomplete", props.id);
+};
 </script>
 
 <template>
@@ -11,10 +22,14 @@ defineProps({ id: Number, title: String, content: String, due_date: String });
             <input
               class="form-check-input me-2"
               type="checkbox"
-              value=""
-              id="task-"
+              value="true"
+              :id="'task-' + id"
+              :checked="completed"
+              @change="handleTaskChange"
             />
-            <label class="form-check-label" for="task">{{ title }}</label>
+            <label class="form-check-label" :for="'task-' + id">{{
+              title
+            }}</label>
           </div>
           <small>{{ due_date }}</small>
         </div>

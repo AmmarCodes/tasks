@@ -1,6 +1,9 @@
 <script>
 import axios from "axios";
 import Task from "./task.vue";
+axios.defaults.headers.common["X-CSRF-Token"] = document
+  .querySelector('meta[name="csrf-token"]')
+  .getAttribute("content");
 
 export default {
   data() {
@@ -14,6 +17,18 @@ export default {
     });
   },
   components: { Task },
+  methods: {
+    completeTask(id) {
+      axios.put(`/tasks/${id}/complete`).then((result) => {
+        console.log(result);
+      });
+    },
+    uncompleteTask(id) {
+      axios.put(`/tasks/${id}/uncomplete`).then((result) => {
+        console.log(result);
+      });
+    },
+  },
 };
 </script>
 
@@ -23,6 +38,12 @@ export default {
     <a href="#" class="btn btn-outline-primary">New Task</a>
   </div>
   <div class="row row-cols-1 g-4">
-    <Task v-for="task in tasks" v-bind="task" v-bind:key="task.id" />
+    <Task
+      v-for="task in tasks"
+      v-bind="task"
+      v-bind:key="task.id"
+      @complete="completeTask"
+      @uncomplete="uncompleteTask"
+    />
   </div>
 </template>
