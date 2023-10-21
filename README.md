@@ -8,8 +8,9 @@ rails new tasks --skip-action-mailbox --skip-hotwire --skip-action-text --databa
 
 ## Requirements
 
-- [ ] Make the Vue app loads on tasks index only
+- [x] Make the Vue app loads on tasks index only
 - [ ] Convert tasks from html to Vue components
+- [ ] Load tasks from API
 - [ ] Check off tasks
 - [ ] Start/stop timers for a task
 
