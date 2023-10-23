@@ -13,6 +13,9 @@
     "nodemon": "^3.0.1",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^9.2.0",
     "sass": "^1.69.4",
     "turbolinks": "^5.2.0",
     "vue": "^3.3.6"
