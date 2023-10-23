@@ -2,7 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: %i[show edit update destroy complete uncomplete]
+  before_action :set_task, only: %i[show edit update destroy complete uncomplete start_timer stop_timer]
 
   # GET /tasks or /tasks.json
   def index
@@ -64,6 +64,14 @@ class TasksController < ApplicationController
 
   def uncomplete
     @task.update({ completed: false })
+  end
+
+  def start_timer
+    @task.timelogs.create
+  end
+
+  def stop_timer
+    @task.timelogs.last.update(end_time: Date.new)
   end
 
   private
