@@ -76,11 +76,11 @@ class TasksController < ApplicationController
   end
 
   def start_timer
-    @task.timelogs.create
+    @task.start_timer
   end
 
   def stop_timer
-    @task.timelogs.last.update(end_time: Date.new)
+    @task.stop_timer
   end
 
   private

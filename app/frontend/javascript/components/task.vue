@@ -1,14 +1,16 @@
 <script setup>
 import { ref } from "vue";
 
-let timerStarted = ref(false);
 const props = defineProps({
   id: Number,
   title: String,
   content: String,
   due_date: String,
   completed: Boolean,
+  has_active_timer: Boolean,
 });
+
+let timerStarted = ref(Boolean(props.has_active_timer));
 const emit = defineEmits([
   "complete",
   "uncomplete",
@@ -23,10 +25,10 @@ const handleTaskChange = (event) => {
 const handleTimerToggle = () => {
   if (timerStarted.value) {
     timerStarted.value = false;
-    emit("stop_timer");
+    emit("stopTimer", props.id);
   } else {
     timerStarted.value = true;
-    emit("start_timer");
+    emit("startTimer", props.id);
   }
 };
 </script>
@@ -58,17 +60,19 @@ const handleTimerToggle = () => {
             <i class="bi bi-stopwatch"></i>
             Estimated time: xx min
           </div>
-          <button
-            class="btn btn-icon"
-            title="Start a timer"
-            @click="handleTimerToggle"
-          >
-            <i
-              class="bi"
-              :class="timerStarted ? 'bi-pause-circle' : 'bi-play-circle'"
-            ></i>
-          </button>
-          <!-- <i class="bi bi-pause-circle"></i> -->
+          <div>
+            <span>time counter 00:30</span>
+            <button
+              class="btn btn-icon"
+              title="Start a timer"
+              @click="handleTimerToggle"
+            >
+              <i
+                class="bi"
+                :class="timerStarted ? 'bi-pause-circle' : 'bi-play-circle'"
+              ></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>

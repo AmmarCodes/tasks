@@ -19,14 +19,16 @@ export default {
   components: { Task },
   methods: {
     completeTask(id) {
-      axios.put(`/tasks/${id}/complete`).then((result) => {
-        console.log(result);
-      });
+      axios.put(`/tasks/${id}/complete`);
     },
     uncompleteTask(id) {
-      axios.put(`/tasks/${id}/uncomplete`).then((result) => {
-        console.log(result);
-      });
+      axios.put(`/tasks/${id}/uncomplete`);
+    },
+    startTimer(id) {
+      axios.put(`/tasks/${id}/start`);
+    },
+    stopTimer(id) {
+      axios.put(`/tasks/${id}/stop`);
     },
   },
 };
@@ -44,6 +46,8 @@ export default {
       v-bind:key="task.id"
       @complete="completeTask"
       @uncomplete="uncompleteTask"
+      @start-timer="startTimer"
+      @stop-timer="stopTimer"
     />
   </div>
 </template>

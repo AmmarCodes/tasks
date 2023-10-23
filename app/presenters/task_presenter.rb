@@ -9,7 +9,9 @@ class TaskPresenter
   def present
     task = task_props
 
-    task.merge!(timer: TimelogPresenter.new(@timer).present) if @timer
+    task.merge!(timer: TimelogPresenter.new(@timer).present) if active_timer?
+
+    task.merge!(timelogs: timelogs)
 
     task
   end
@@ -29,5 +31,9 @@ class TaskPresenter
 
   def active_timer?
     @timer && @timer.end_time.nil?
+  end
+
+  def timelogs
+    @task.timelogs.map { |l| TimelogPresenter.new(l).present }
   end
 end
