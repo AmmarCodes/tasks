@@ -6,11 +6,20 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = current_user.tasks.all
+    @tasks = current_user.tasks.includes(:timelogs).all
+    respond_to do |format|
+      format.html
+      format.json { render json: @tasks.map { |task| TaskPresenter.new(task).present } }
+    end
   end
 
   # GET /tasks/1 or /tasks/1.json
-  def show; end
+  def show
+    respond_to do |format|
+      format.html
+      format.json { render json: TaskPresenter.new(@task).present.to_json }
+    end
+  end
 
   # GET /tasks/new
   def new
