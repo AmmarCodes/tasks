@@ -13,6 +13,8 @@ rails new tasks --skip-action-mailbox --skip-hotwire --skip-action-text --databa
 - [x] Load tasks from API
 - [x] Check off tasks
 - [ ] Start/stop timers for a task
+    - [ ] Add start/stop button
+    - [ ] Add duration and has_active_timer to task props
 - [ ] Convert Create new task form to Vue
 
 ## Database structure
