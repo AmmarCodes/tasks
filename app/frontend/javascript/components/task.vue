@@ -27,9 +27,7 @@ const handleTaskChange = (event) => {
               :checked="completed"
               @change="handleTaskChange"
             />
-            <label class="form-check-label" :for="'task-' + id">{{
-              title
-            }}</label>
+            <span>{{ title }}</span>
           </div>
           <small>{{ due_date }}</small>
         </div>
