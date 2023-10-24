@@ -1,6 +1,9 @@
 <script setup>
+import { Timer } from "easytimer.js";
 import { ref } from "vue";
 
+const timer = new Timer();
+let eventListener;
 const props = defineProps({
   id: Number,
   title: String,
@@ -11,12 +14,8 @@ const props = defineProps({
 });
 
 let timerStarted = ref(Boolean(props.has_active_timer));
-const emit = defineEmits([
-  "complete",
-  "uncomplete",
-  "start_timer",
-  "stop_timer",
-]);
+let time = ref("00:00");
+const emit = defineEmits(["complete", "uncomplete", "startTimer", "stopTimer"]);
 
 const handleTaskChange = (event) => {
   emit(event.target.checked ? "complete" : "uncomplete", props.id);
@@ -25,9 +24,15 @@ const handleTaskChange = (event) => {
 const handleTimerToggle = () => {
   if (timerStarted.value) {
     timerStarted.value = false;
+    timer.pause();
     emit("stopTimer", props.id);
+    removeEventListener("secondsUpdated", eventListener);
   } else {
     timerStarted.value = true;
+    timer.start();
+    eventListener = timer.addEventListener("secondsUpdated", () => {
+      time.value = timer.getTimeValues().toString(["minutes", "seconds"]);
+    });
     emit("startTimer", props.id);
   }
 };
@@ -61,7 +66,7 @@ const handleTimerToggle = () => {
             Estimated time: xx min
           </div>
           <div>
-            <span>time counter 00:30</span>
+            <span>{{ time }}</span>
             <button
               class="btn btn-icon"
               title="Start a timer"
