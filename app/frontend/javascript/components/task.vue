@@ -1,6 +1,8 @@
 <script setup>
 import { Timer } from "easytimer.js";
+import parseISO from "date-fns/parseISO";
 import { ref } from "vue";
+import { onMounted } from "vue";
 
 const props = defineProps({
   id: Number,
@@ -9,15 +11,36 @@ const props = defineProps({
   due_date: String,
   completed: Boolean,
   has_active_timer: Boolean,
+  timerStartDate: String,
 });
 
 let timerStarted = ref(Boolean(props.has_active_timer));
-// TODO: set the current timer to equal the active timer in the backend
 
 const timer = new Timer();
 let timerEventListener;
 
-let time = ref("00:00");
+onMounted(() => {
+  // set the current timer to equal the active timer in the backend
+  if (timerStarted && props.timerStartDate) {
+    const timerStartTime = parseISO(props.timerStartDate);
+
+    const seconds = Math.round((new Date() - timerStartTime) / 1000);
+    timer.start({
+      startValues: { seconds: seconds },
+    });
+    setTimeValue();
+
+    timerEventListener = timer.addEventListener("secondsUpdated", () => {
+      setTimeValue();
+    });
+  }
+});
+
+const setTimeValue = () => {
+  time.value = timer.getTimeValues().toString(["hours", "minutes", "seconds"]);
+};
+
+let time = ref("00:00:00");
 const emit = defineEmits(["complete", "uncomplete", "startTimer", "stopTimer"]);
 
 const handleTaskChange = (event) => {
@@ -32,9 +55,9 @@ const handleTimerToggle = () => {
     removeEventListener("secondsUpdated", timerEventListener);
   } else {
     timerStarted.value = true;
-    timer.start({ startValues: { seconds: 2 } });
+    timer.start();
     timerEventListener = timer.addEventListener("secondsUpdated", () => {
-      time.value = timer.getTimeValues().toString(["minutes", "seconds"]);
+      setTimeValue();
     });
     emit("startTimer", props.id);
   }

@@ -12,9 +12,7 @@ rails new tasks --skip-action-mailbox --skip-hotwire --skip-action-text --databa
 - [x] Convert tasks from html to Vue components
 - [x] Load tasks from API
 - [x] Check off tasks
-- [ ] Start/stop timers for a task
-    - [ ] Add start/stop button
-    - [ ] Add duration and has_active_timer to task props
+- [x] Start/stop timers for a task
 - [ ] Parse date from Ruby to Vue
 - [ ] Convert Create new task form to Vue
 

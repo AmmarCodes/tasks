@@ -44,6 +44,7 @@ export default {
       v-for="task in tasks"
       v-bind="task"
       v-bind:key="task.id"
+      :timer-start-date="task.timer?.start_time"
       @complete="completeTask"
       @uncomplete="uncompleteTask"
       @start-timer="startTimer"
