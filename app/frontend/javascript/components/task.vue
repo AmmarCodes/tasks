@@ -2,8 +2,6 @@
 import { Timer } from "easytimer.js";
 import { ref } from "vue";
 
-const timer = new Timer();
-let eventListener;
 const props = defineProps({
   id: Number,
   title: String,
@@ -14,6 +12,11 @@ const props = defineProps({
 });
 
 let timerStarted = ref(Boolean(props.has_active_timer));
+// TODO: set the current timer to equal the active timer in the backend
+
+const timer = new Timer();
+let timerEventListener;
+
 let time = ref("00:00");
 const emit = defineEmits(["complete", "uncomplete", "startTimer", "stopTimer"]);
 
@@ -26,11 +29,11 @@ const handleTimerToggle = () => {
     timerStarted.value = false;
     timer.pause();
     emit("stopTimer", props.id);
-    removeEventListener("secondsUpdated", eventListener);
+    removeEventListener("secondsUpdated", timerEventListener);
   } else {
     timerStarted.value = true;
-    timer.start();
-    eventListener = timer.addEventListener("secondsUpdated", () => {
+    timer.start({ startValues: { seconds: 2 } });
+    timerEventListener = timer.addEventListener("secondsUpdated", () => {
       time.value = timer.getTimeValues().toString(["minutes", "seconds"]);
     });
     emit("startTimer", props.id);
@@ -48,7 +51,6 @@ const handleTimerToggle = () => {
               class="form-check-input me-2"
               type="checkbox"
               value="true"
-              :id="'task-' + id"
               :checked="completed"
               @change="handleTaskChange"
             />
