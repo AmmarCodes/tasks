@@ -2,7 +2,7 @@
 
 class Task < ApplicationRecord
   belongs_to :user
-  has_many :timelogs
+  has_many :timelogs, -> { order('id') }
   validates :title, presence: true
 
   def start_timer
