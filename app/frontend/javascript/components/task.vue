@@ -25,9 +25,7 @@ export default {
     duration: Number,
   },
   mounted() {
-    console.log(this.has_active_timer);
     this.timerStarted = this.has_active_timer;
-    console.log(this.timerStarted);
     // add any existing `duration` to the `seconds` of the last timer
     let seconds = this.duration;
 
