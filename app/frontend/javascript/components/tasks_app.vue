@@ -1,9 +1,12 @@
 <script>
-import axios from "axios";
+import {
+  completeTask,
+  uncompleteTask,
+  startTimer,
+  stopTimer,
+  getTasks,
+} from "../utils/methods";
 import Task from "./task.vue";
-axios.defaults.headers.common["X-CSRF-Token"] = document
-  .querySelector('meta[name="csrf-token"]')
-  .getAttribute("content");
 
 export default {
   data() {
@@ -12,25 +15,12 @@ export default {
     };
   },
   created() {
-    axios.get("/tasks.json").then(({ data }) => {
+    getTasks().then(({ data }) => {
       this.tasks = data;
     });
   },
   components: { Task },
-  methods: {
-    completeTask(id) {
-      axios.put(`/tasks/${id}/complete`);
-    },
-    uncompleteTask(id) {
-      axios.put(`/tasks/${id}/uncomplete`);
-    },
-    startTimer(id) {
-      axios.put(`/tasks/${id}/start`);
-    },
-    stopTimer(id) {
-      axios.put(`/tasks/${id}/stop`);
-    },
-  },
+  methods: { completeTask, uncompleteTask, startTimer, stopTimer },
 };
 </script>
 
