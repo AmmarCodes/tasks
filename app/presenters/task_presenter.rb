@@ -25,7 +25,8 @@ class TaskPresenter
       content: @task.content,
       completed: @task.completed,
       due_date: @task.due_date,
-      has_active_timer: active_timer?
+      has_active_timer: active_timer?,
+      duration: @task.timelogs.filter(&:end_time).map { |t| t.end_time - t.start_time }.sum.round
     }
   end
 

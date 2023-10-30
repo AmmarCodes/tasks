@@ -13,7 +13,8 @@ rails new tasks --skip-action-mailbox --skip-hotwire --skip-action-text --databa
 - [x] Load tasks from API
 - [x] Check off tasks
 - [x] Start/stop timers for a task
-- [ ] Parse date from Ruby to Vue
+- [x] Get how much minutes each task has on record
+- [ ] Show a report for a task how long did it take over the days
 - [ ] Convert Create new task form to Vue
 
 ## Database structure

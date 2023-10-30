@@ -3,6 +3,7 @@ import { Timer } from "easytimer.js";
 import parseISO from "date-fns/parseISO";
 import { ref } from "vue";
 import { onMounted } from "vue";
+import { secondsToDuration } from "../utils/time_helpers";
 
 const props = defineProps({
   id: Number,
@@ -12,28 +13,36 @@ const props = defineProps({
   completed: Boolean,
   has_active_timer: Boolean,
   timerStartDate: String,
+  duration: Number,
 });
 
 let timerStarted = ref(Boolean(props.has_active_timer));
 
-const timer = new Timer();
+let timer;
 let timerEventListener;
 
 onMounted(() => {
-  // set the current timer to equal the active timer in the backend
-  if (timerStarted && props.timerStartDate) {
-    const timerStartTime = parseISO(props.timerStartDate);
+  // add any existing `duration` to the `seconds` of the last timer
+  let seconds = props.duration;
 
-    const seconds = Math.round((new Date() - timerStartTime) / 1000);
+  if (timerStarted && props.timerStartDate) {
+    // set the current timer to equal the active timer in the backend
+    const timerStartTime = parseISO(props.timerStartDate);
+    seconds += Math.round((new Date() - timerStartTime) / 1000);
+    timer = new Timer();
     timer.start({
       startValues: { seconds: seconds },
     });
-    setTimeValue();
 
     timerEventListener = timer.addEventListener("secondsUpdated", () => {
       setTimeValue();
     });
+  } else {
+    timer = new Timer({
+      startValues: { seconds: seconds },
+    });
   }
+  setTimeValue();
 });
 
 const setTimeValue = () => {
