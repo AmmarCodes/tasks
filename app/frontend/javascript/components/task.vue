@@ -1,75 +1,82 @@
-<script setup>
+<script>
 import { Timer } from "easytimer.js";
 import parseISO from "date-fns/parseISO";
-import { ref } from "vue";
-import { onMounted } from "vue";
-import { secondsToDuration } from "../utils/time_helpers";
 
-const props = defineProps({
-  id: Number,
-  title: String,
-  content: String,
-  due_date: String,
-  completed: Boolean,
-  has_active_timer: Boolean,
-  timerStartDate: String,
-  duration: Number,
-});
-
-let timerStarted = ref(Boolean(props.has_active_timer));
-
-let timer;
 let timerEventListener;
 
-onMounted(() => {
-  // add any existing `duration` to the `seconds` of the last timer
-  let seconds = props.duration;
+export default {
+  name: "Task",
+  emitt: ["complete", "uncomplete", "startTimer", "stopTimer"],
+  data() {
+    return {
+      time: "00:00:00",
+      timerStarted: false,
+      timer: null,
+    };
+  },
+  props: {
+    id: Number,
+    title: String,
+    content: String,
+    due_date: String,
+    completed: Boolean,
+    has_active_timer: Boolean,
+    timerStartDate: String,
+    duration: Number,
+  },
+  mounted() {
+    console.log(this.has_active_timer);
+    this.timerStarted = this.has_active_timer;
+    console.log(this.timerStarted);
+    // add any existing `duration` to the `seconds` of the last timer
+    let seconds = this.duration;
 
-  if (timerStarted && props.timerStartDate) {
-    // set the current timer to equal the active timer in the backend
-    const timerStartTime = parseISO(props.timerStartDate);
-    seconds += Math.round((new Date() - timerStartTime) / 1000);
-    timer = new Timer();
-    timer.start({
-      startValues: { seconds: seconds },
-    });
+    if (this.timerStarted && this.timerStartDate) {
+      // set the current timer to equal the active timer in the backend
+      const timerStartTime = parseISO(this.timerStartDate);
+      seconds += Math.round((new Date() - timerStartTime) / 1000);
+      this.timer = new Timer();
+      this.timer.start({
+        startValues: { seconds: seconds },
+      });
 
-    timerEventListener = timer.addEventListener("secondsUpdated", () => {
-      setTimeValue();
-    });
-  } else {
-    timer = new Timer({
-      startValues: { seconds: seconds },
-    });
-  }
-  setTimeValue();
-});
-
-const setTimeValue = () => {
-  time.value = timer.getTimeValues().toString(["hours", "minutes", "seconds"]);
-};
-
-let time = ref("00:00:00");
-const emit = defineEmits(["complete", "uncomplete", "startTimer", "stopTimer"]);
-
-const handleTaskChange = (event) => {
-  emit(event.target.checked ? "complete" : "uncomplete", props.id);
-};
-
-const handleTimerToggle = () => {
-  if (timerStarted.value) {
-    timerStarted.value = false;
-    timer.pause();
-    emit("stopTimer", props.id);
-    removeEventListener("secondsUpdated", timerEventListener);
-  } else {
-    timerStarted.value = true;
-    timer.start();
-    timerEventListener = timer.addEventListener("secondsUpdated", () => {
-      setTimeValue();
-    });
-    emit("startTimer", props.id);
-  }
+      timerEventListener = this.timer.addEventListener(
+        "secondsUpdated",
+        this.setTimeValue,
+      );
+    } else {
+      this.timer = new Timer({
+        startValues: { seconds: seconds },
+      });
+    }
+    this.setTimeValue();
+  },
+  methods: {
+    handleTaskChange(event) {
+      this.$emit(event.target.checked ? "complete" : "uncomplete", this.id);
+    },
+    handleTimerToggle() {
+      if (this.timerStarted) {
+        this.timerStarted = false;
+        this.timer.pause();
+        this.$emit("stopTimer", this.id);
+        removeEventListener("secondsUpdated", timerEventListener);
+      } else {
+        this.timerStarted = true;
+        this.timer.start();
+        timerEventListener = this.timer.addEventListener(
+          "secondsUpdated",
+          this.setTimeValue,
+        );
+        this.$emit("startTimer", this.id);
+      }
+    },
+    setTimeValue() {
+      this.time = this.timer
+        .getTimeValues()
+        .toString(["hours", "minutes", "seconds"]);
+    },
+  },
 };
 </script>
 
