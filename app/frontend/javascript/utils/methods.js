@@ -4,20 +4,20 @@ axios.defaults.headers.common["X-CSRF-Token"] = document
   .getAttribute("content");
 
 export function completeTask(id) {
-  axios.put(`/tasks/${id}/complete`);
+  axios.put(`/api/tasks/${id}/complete`);
 }
 export function uncompleteTask(id) {
-  axios.put(`/tasks/${id}/uncomplete`);
+  axios.put(`/api/tasks/${id}/uncomplete`);
 }
 export function startTimer(id) {
-  axios.put(`/tasks/${id}/start`);
+  axios.put(`/api/tasks/${id}/start`);
 }
 export function stopTimer(id) {
-  axios.put(`/tasks/${id}/stop`);
+  axios.put(`/api/tasks/${id}/stop`);
 }
 export function getTasks() {
-  return axios.get("/tasks.json");
+  return axios.get("/api/tasks.json");
 }
 export function getTask(id) {
-  return axios.get(`/tasks/${id}.json`);
+  return axios.get(`/api/tasks/${id}.json`);
 }
