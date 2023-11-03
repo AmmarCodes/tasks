@@ -91,7 +91,11 @@ export default {
               :checked="completed"
               @change="handleTaskChange"
             />
-            <span>{{ title }}</span>
+            <router-link :to="{ name: 'task', params: { id } }">
+              <span>
+                {{ title }}
+              </span>
+            </router-link>
           </div>
           <small>{{ due_date }}</small>
         </div>

@@ -20,7 +20,8 @@
     "postcss-preset-env": "^9.2.0",
     "sass": "^1.69.4",
     "turbolinks": "^5.2.0",
-    "vue": "^3.3.6"
+    "vue": "^3.3.6",
+    "vue-router": "4"
   },
   "version": "0.1.0",
   "devDependencies": {

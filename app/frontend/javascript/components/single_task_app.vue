@@ -14,9 +14,8 @@ export default {
       task: null,
     };
   },
-  inject: ["taskId"],
   created() {
-    getTask(this.taskId).then(({ data }) => {
+    getTask(this.$route.params.id).then(({ data }) => {
       this.task = data;
     });
   },

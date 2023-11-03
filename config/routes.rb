@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   put 'tasks/:id/start', to: 'tasks#start_timer'
   put 'tasks/:id/stop', to: 'tasks#stop_timer'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  # root to: 'home#index'
+
+  root to: 'application#index'
+  match '*path', to: 'application#index', via: :get
 end
